@@ -3,7 +3,13 @@ import { Navbar } from "@/components/Navbar";
 import { getDestination, getGalleryImages } from "@/data/destinations";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MapPin } from "lucide-react";
+import { ArrowLeft, MapPin, Plus, Check } from "lucide-react";
+import { WeatherCard } from "@/components/WeatherCard";
+import { MapView } from "@/components/MapView";
+import { ReviewSection } from "@/components/ReviewSection";
+import { ChatRoom } from "@/components/ChatRoom";
+import { TerraChat } from "@/components/TerraChat";
+import { useItinerary } from "@/lib/itinerary";
 
 export default function DestinationDetail() {
   const { slug } = useParams<{ slug: string }>();
