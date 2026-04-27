@@ -19,18 +19,25 @@ Deno.serve(async (req) => {
 
     // Weather (current + 5-day/3h forecast on free tier)
     if (OW) {
-      const [cur, fc] = await Promise.all([
-        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric&appid=${OW}`).then(r => r.json()),
-        fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&units=metric&appid=${OW}&cnt=8`).then(r => r.json()),
+      const [curR, fcR] = await Promise.all([
+        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric&appid=${OW}`),
+        fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&units=metric&appid=${OW}&cnt=8`),
       ]);
-      result.weather = {
-        temp: cur?.main?.temp, feels_like: cur?.main?.feels_like, humidity: cur?.main?.humidity,
-        wind: cur?.wind?.speed, condition: cur?.weather?.[0]?.main, description: cur?.weather?.[0]?.description,
-        icon: cur?.weather?.[0]?.icon, city: cur?.name,
-      };
-      result.forecast = (fc?.list ?? []).slice(0, 8).map((f: any) => ({
-        time: f.dt_txt, temp: f.main?.temp, condition: f.weather?.[0]?.main, icon: f.weather?.[0]?.icon,
-      }));
+      const cur = await curR.json();
+      const fc = await fcR.json();
+      if (!curR.ok) {
+        console.error("OpenWeather error", curR.status, cur);
+        result.weather_error = cur?.message ?? `HTTP ${curR.status}`;
+      } else {
+        result.weather = {
+          temp: cur?.main?.temp, feels_like: cur?.main?.feels_like, humidity: cur?.main?.humidity,
+          wind: cur?.wind?.speed, condition: cur?.weather?.[0]?.main, description: cur?.weather?.[0]?.description,
+          icon: cur?.weather?.[0]?.icon, city: cur?.name,
+        };
+        result.forecast = (fc?.list ?? []).slice(0, 8).map((f: any) => ({
+          time: f.dt_txt, temp: f.main?.temp, condition: f.weather?.[0]?.main, icon: f.weather?.[0]?.icon,
+        }));
+      }
     } else {
       result.mock = true;
       result.weather = { temp: 22, feels_like: 21, humidity: 65, wind: 3.2, condition: "Clouds", description: "scattered clouds (mock)", icon: "03d", city: "—" };
