@@ -3,11 +3,18 @@ import { Navbar } from "@/components/Navbar";
 import { getDestination, getGalleryImages } from "@/data/destinations";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MapPin } from "lucide-react";
+import { ArrowLeft, MapPin, Plus, Check } from "lucide-react";
+import { WeatherCard } from "@/components/WeatherCard";
+import { MapView } from "@/components/MapView";
+import { ReviewSection } from "@/components/ReviewSection";
+import { ChatRoom } from "@/components/ChatRoom";
+import { TerraChat } from "@/components/TerraChat";
+import { useItinerary } from "@/lib/itinerary";
 
 export default function DestinationDetail() {
   const { slug } = useParams<{ slug: string }>();
   const d = slug ? getDestination(slug) : undefined;
+  const { add, has } = useItinerary();
   if (!d) {
     return (
       <div className="min-h-screen bg-background">
@@ -19,6 +26,8 @@ export default function DestinationDetail() {
       </div>
     );
   }
+  const inItinerary = has(d.slug);
+  const ctx = `${d.place}, ${d.state} (${d.category}, ${d.type}). Best season: ${d.best_season}. Description: ${d.description}`;
   const gallery = getGalleryImages(d);
   return (
     <div className="min-h-screen bg-background">
@@ -71,8 +80,22 @@ export default function DestinationDetail() {
                   {d.travel_tips.map((t, i) => <li key={i}>{t}</li>)}
                 </ul>
               </section>
+              <section>
+                <h2 className="font-display text-2xl mb-3">Location</h2>
+                <MapView destination={d} />
+              </section>
+              <ReviewSection slug={d.slug} />
+              <ChatRoom slug={d.slug} />
             </article>
             <aside className="space-y-4">
+              <Button
+                onClick={() => add({ slug: d.slug, place: d.place, state: d.state })}
+                disabled={inItinerary}
+                className="w-full bg-primary hover:bg-primary/90"
+              >
+                {inItinerary ? <><Check className="size-4 mr-2" /> Added to itinerary</> : <><Plus className="size-4 mr-2" /> Add to itinerary</>}
+              </Button>
+              <WeatherCard lat={d.coords.lat} lng={d.coords.lng} />
               <div className="bg-card border border-border rounded-xl p-5">
                 <h3 className="font-display text-lg mb-3">Coordinates</h3>
                 <p className="text-sm text-muted-foreground">Lat {d.coords.lat}°<br/>Lng {d.coords.lng}°</p>
@@ -91,11 +114,11 @@ export default function DestinationDetail() {
                   ))}
                 </ul>
               </div>
-              <Button className="w-full bg-primary hover:bg-primary/90" disabled>Plan My Trip (coming next)</Button>
             </aside>
           </div>
         </div>
       </main>
+      <TerraChat destinationContext={ctx} />
     </div>
   );
 }
