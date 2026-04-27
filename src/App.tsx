@@ -6,6 +6,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import DestinationDetail from "./pages/DestinationDetail";
+import Itinerary from "./pages/Itinerary";
+import ShareItinerary from "./pages/ShareItinerary";
+import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,6 +23,9 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/destination/:slug" element={<DestinationDetail />} />
+            <Route path="/itinerary" element={<Itinerary />} />
+            <Route path="/share/:token" element={<ShareItinerary />} />
+            <Route path="/auth" element={<Auth />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
