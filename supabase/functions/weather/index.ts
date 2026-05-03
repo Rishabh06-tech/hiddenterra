@@ -28,6 +28,9 @@ Deno.serve(async (req) => {
       if (!curR.ok) {
         console.error("OpenWeather error", curR.status, cur);
         result.weather_error = cur?.message ?? `HTTP ${curR.status}`;
+        result.mock = true;
+        result.weather = { temp: 22, feels_like: 21, humidity: 65, wind: 3.2, condition: "Clouds", description: "scattered clouds (sample)", icon: "03d", city: "—" };
+        result.forecast = [];
       } else {
         result.weather = {
           temp: cur?.main?.temp, feels_like: cur?.main?.feels_like, humidity: cur?.main?.humidity,
