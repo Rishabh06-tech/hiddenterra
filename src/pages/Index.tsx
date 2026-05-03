@@ -135,7 +135,7 @@ export default function Index() {
             </div>
             <div>
               <h4 className="font-medium mb-2">Disclaimer</h4>
-              <p className="text-muted-foreground">Weather and AQI data sourced from third-party APIs and may vary slightly from real-time conditions.</p>
+              <p className="text-muted-foreground">Weather and AQI data .</p>
             </div>
           </div>
           <p className="text-center text-xs text-muted-foreground mt-8">© {new Date().getFullYear()} HiddenTerra · A non-commercial demo project</p>
