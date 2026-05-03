@@ -9,6 +9,7 @@ import { MapView } from "@/components/MapView";
 import { ReviewSection } from "@/components/ReviewSection";
 import { ChatRoom } from "@/components/ChatRoom";
 import { TerraChat } from "@/components/TerraChat";
+import { NearStays } from "@/components/NearStays";
 import { useItinerary } from "@/lib/itinerary";
 
 export default function DestinationDetail() {
