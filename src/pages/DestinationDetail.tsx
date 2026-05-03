@@ -9,6 +9,7 @@ import { MapView } from "@/components/MapView";
 import { ReviewSection } from "@/components/ReviewSection";
 import { ChatRoom } from "@/components/ChatRoom";
 import { TerraChat } from "@/components/TerraChat";
+import { NearStays } from "@/components/NearStays";
 import { useItinerary } from "@/lib/itinerary";
 
 export default function DestinationDetail() {
@@ -84,6 +85,7 @@ export default function DestinationDetail() {
                 <h2 className="font-display text-2xl mb-3">Location</h2>
                 <MapView destination={d} />
               </section>
+              <NearStays slug={d.slug} />
               <ReviewSection slug={d.slug} />
               <ChatRoom slug={d.slug} />
             </article>

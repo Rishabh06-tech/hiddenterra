@@ -28,6 +28,9 @@ Deno.serve(async (req) => {
       if (!curR.ok) {
         console.error("OpenWeather error", curR.status, cur);
         result.weather_error = cur?.message ?? `HTTP ${curR.status}`;
+        result.mock = true;
+        result.weather = { temp: 22, feels_like: 21, humidity: 65, wind: 3.2, condition: "Clouds", description: "scattered clouds (sample)", icon: "03d", city: "—" };
+        result.forecast = [];
       } else {
         result.weather = {
           temp: cur?.main?.temp, feels_like: cur?.main?.feels_like, humidity: cur?.main?.humidity,
@@ -50,10 +53,10 @@ Deno.serve(async (req) => {
       if (a?.status === "ok") {
         result.aqi = { value: a.data?.aqi, dominant: a.data?.dominentpol, station: a.data?.city?.name, time: a.data?.time?.iso };
       } else {
-        result.aqi = { error: a?.data ?? "unavailable" };
+        result.aqi = { value: 58, dominant: "pm25", station: "Sample data", mock: true, error: a?.data ?? "unavailable" };
       }
     } else {
-      (result as any).aqi = { value: 58, dominant: "pm25", station: "Mock station", mock: true };
+      (result as any).aqi = { value: 58, dominant: "pm25", station: "Sample data", mock: true };
     }
 
     return new Response(JSON.stringify(result), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
