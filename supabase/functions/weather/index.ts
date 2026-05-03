@@ -53,10 +53,10 @@ Deno.serve(async (req) => {
       if (a?.status === "ok") {
         result.aqi = { value: a.data?.aqi, dominant: a.data?.dominentpol, station: a.data?.city?.name, time: a.data?.time?.iso };
       } else {
-        result.aqi = { error: a?.data ?? "unavailable" };
+        result.aqi = { value: 58, dominant: "pm25", station: "Sample data", mock: true, error: a?.data ?? "unavailable" };
       }
     } else {
-      (result as any).aqi = { value: 58, dominant: "pm25", station: "Mock station", mock: true };
+      (result as any).aqi = { value: 58, dominant: "pm25", station: "Sample data", mock: true };
     }
 
     return new Response(JSON.stringify(result), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
