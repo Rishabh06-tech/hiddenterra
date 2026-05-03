@@ -30,7 +30,10 @@ export function NearStays({ slug }: { slug: string }) {
               <ul className="space-y-3">
                 {stays[tier].map((s, i) => (
                   <li key={i} className="text-sm">
-                    <p className="font-medium text-foreground">{s.name}</p>
+                    <div className="flex items-baseline justify-between gap-2">
+                      <p className="font-medium text-foreground">{s.name}</p>
+                      <span className="text-xs font-medium text-primary whitespace-nowrap">{s.price}<span className="text-muted-foreground font-normal"> /night</span></span>
+                    </div>
                     <p className="text-xs text-muted-foreground">{s.area}</p>
                     {s.note && <p className="text-xs text-foreground/70 mt-1">{s.note}</p>}
                   </li>
