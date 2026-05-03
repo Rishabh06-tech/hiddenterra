@@ -85,6 +85,7 @@ export default function DestinationDetail() {
                 <h2 className="font-display text-2xl mb-3">Location</h2>
                 <MapView destination={d} />
               </section>
+              <NearStays slug={d.slug} />
               <ReviewSection slug={d.slug} />
               <ChatRoom slug={d.slug} />
             </article>
